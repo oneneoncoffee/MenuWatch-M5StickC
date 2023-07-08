@@ -1,0 +1,91 @@
+#include <M5StickC.h>
+#define MULTI random(0xFFFF)
+// Menu options
+const int MENU_COUNT = 3;
+const char* MENU_OPTIONS[MENU_COUNT] = {
+  "Option 1",
+  "Option 2",
+  "Option 3"
+};
+
+int selectedOption = 0; // Currently selected menu option
+
+void setup() {
+  M5.begin();
+  M5.Lcd.setRotation(3); // Adjust screen rotation if needed
+  M5.Lcd.fillScreen(BLACK);
+  drawMenu();
+}
+
+void loop() {
+  M5.update(); //  if you remove this line the include libray will not function accurately 
+  if (M5.BtnA.wasPressed()) {   // M5.BtnA.wasReleased() is also a option.
+    // Move selection up
+    selectedOption++;
+    if (selectedOption > 3) { 
+      selectedOption = 0; 
+    } else 
+    if (selectedOption < 0) {
+      selectedOption = MENU_COUNT - 1;
+    }
+    drawMenu();
+  }
+
+  if (M5.BtnB.wasPressed()) {
+    // Select option
+    executeOption(selectedOption);
+    drawMenu();
+  }
+
+}
+
+void drawMenu() {
+  M5.Lcd.fillScreen(BLACK);
+  M5.Lcd.setTextSize(1);
+
+  for (int i = 0; i < MENU_COUNT; i++) {
+    if (i == selectedOption) {
+      M5.Lcd.setTextColor(MULTI);
+    } else {
+      M5.Lcd.setTextColor(WHITE);
+    }
+
+    M5.Lcd.setCursor(10, 10 + (i * 20));
+    M5.Lcd.println(MENU_OPTIONS[i]);
+  }
+}
+
+void executeOption(int option) {
+  // Perform action based on selected option
+  switch (option) {
+    case 0:
+      // Option 1 selected
+      // Add your code here
+      M5.Lcd.fillScreen(BLACK); 
+      M5.Lcd.setTextColor(MULTI); 
+      M5.Lcd.print("OPTION1"); 
+      delay(400); 
+      break;
+    case 1:
+      // Option 2 selected
+      // Add your code here
+      M5.Lcd.fillScreen(BLACK); 
+      M5.Lcd.setTextColor(MULTI); 
+      M5.Lcd.print("OPTION2");
+      delay(400);  
+      break;
+    case 2:
+      // Option 3 selected
+      // Add your code here
+      M5.Lcd.fillScreen(BLACK); 
+      M5.Lcd.setTextColor(MULTI); 
+      M5.Lcd.print("OPTION3"); 
+      delay(400); 
+      break;
+    default:
+      // Invalid option
+      M5.Lcd.fillScreen(BLACK); 
+      drawMenu();
+      break;
+  }
+}
