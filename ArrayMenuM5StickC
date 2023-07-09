@@ -23,10 +23,10 @@ void loop() {
     // Move selection up
     selectedOption++;
     if (selectedOption > 3) { 
-      selectedOption = 1; 
-    } else 
+      selectedOption = 0; // if = 1 then we can use 1st item as a label. 
+    } else           
     if (selectedOption < 0) {
-      selectedOption = MENU_COUNT - 1;
+      selectedOption = MENU_COUNT + 1;
     }
     drawMenu();
   }
