@@ -1,0 +1,101 @@
+#include <M5StickC.h>
+#define MULTI random(0xFFFF) // random colors 
+
+// we can also use a number array for text color
+const long int color[6] = {
+0xf800, // Red 0
+0x07e0, // Green 1
+0x001f, // Blue 2
+0xffe0,  // Yellow 3
+0xffff,  // White 4
+0x0000,  // black 5
+};
+
+// Menu options
+const int MENU_COUNT = 3;
+const char* MENU_OPTIONS[MENU_COUNT] = {
+  "Option 1",
+  "Option 2",
+  "Option 3"
+};
+
+int selectedOption = 1; // Currently selected menu option
+
+void setup() {
+  M5.begin();
+  M5.Lcd.setRotation(3); // Adjust screen rotation if needed
+  M5.Lcd.fillScreen(BLACK);
+  drawMenu();
+}
+
+void loop() {
+  M5.update();  
+  if (M5.BtnA.wasPressed()) {
+    // Move selection down ++ start at 1 and/or move up --  
+    selectedOption++;
+    if (selectedOption > 3) { 
+      selectedOption = 0; 
+    } else 
+    if (selectedOption < 0) {
+      selectedOption = MENU_COUNT + 1;
+    }
+    drawMenu();
+  }
+  if (M5.BtnB.wasPressed()) {
+    // Select option
+    executeOption(selectedOption);
+    drawMenu();
+  }
+
+}
+
+void drawMenu() {
+  M5.Lcd.fillScreen(BLACK);
+  M5.Lcd.setTextSize(2);
+
+  for (int i = 0; i < MENU_COUNT; i++) {
+    if (i == selectedOption) {
+      M5.Lcd.setTextColor(color[0]);
+    } else {
+      M5.Lcd.setTextColor(color[4]);
+    }
+
+    M5.Lcd.setCursor(10, 10 + (i * 20));
+    M5.Lcd.println(MENU_OPTIONS[i]);
+  }
+}
+
+void executeOption(int option) {
+  // Perform action based on selected option
+  switch (option) {
+    case 0:
+      // Option 1 selected
+      // Add your code here
+      M5.Lcd.fillScreen(BLACK); 
+      M5.Lcd.setTextColor(color[3]); 
+      M5.Lcd.print("OPTION1"); 
+      delay(400); 
+      break;
+    case 1:
+      // Option 2 selected
+      // Add your code here
+      M5.Lcd.fillScreen(BLACK); 
+      M5.Lcd.setTextColor(color[3]); 
+      M5.Lcd.print("OPTION2");
+      delay(400);  
+      break;
+    case 2:
+      // Option 3 selected
+      // Add your code here
+      M5.Lcd.fillScreen(BLACK); 
+      M5.Lcd.setTextColor(color[3]); 
+      M5.Lcd.print("OPTION3"); 
+      delay(400); 
+      break;
+    default:
+      // Invalid option
+      M5.Lcd.fillScreen(BLACK); 
+      drawMenu();
+      break;
+  }
+}
