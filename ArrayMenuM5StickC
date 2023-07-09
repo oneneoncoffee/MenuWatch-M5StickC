@@ -23,7 +23,7 @@ void loop() {
     // Move selection up
     selectedOption++;
     if (selectedOption > 3) { 
-      selectedOption = 0; 
+      selectedOption = 1; 
     } else 
     if (selectedOption < 0) {
       selectedOption = MENU_COUNT - 1;
